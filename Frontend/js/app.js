@@ -52,15 +52,22 @@
             }
         });
 
-        if (!response.ok) {
-            throw new Error(`Error ${response.status}`);
-        }
-
         if (response.status === 204) {
             return null;
         }
 
-        return response.json();
+        const body = await response.json();
+
+        if (!response.ok) {
+            const detail = body.detail
+                ? (typeof body.detail === "string"
+                    ? body.detail
+                    : JSON.stringify(body.detail))
+                : `Error ${response.status}`;
+            throw new Error(detail);
+        }
+
+        return body;
     };
 
     const store = {
@@ -138,7 +145,7 @@
         async updateEnrollment(enrollmentId, data) {
             if (window.APP_CONFIG.USE_API) {
                 return api(`/matriculas/${enrollmentId}`, {
-                    method: "PUT",
+                    method: "PATCH",
                     body: JSON.stringify(data)
                 });
             }
@@ -229,7 +236,7 @@
                 `;
         } catch (error) {
             console.error(error);
-            toast("No fue posible cargar el panel.");
+            toast(`No fue posible cargar el panel: ${error.message}`);
         }
     }
 

@@ -95,7 +95,7 @@
             GS.toast("Pago registrado correctamente.");
         } catch (error) {
             console.error(error);
-            GS.toast("No fue posible actualizar el pago.");
+            GS.toast(`No fue posible actualizar el pago: ${error.message}`);
         }
     });
 

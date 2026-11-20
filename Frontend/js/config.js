@@ -1,4 +1,4 @@
 window.APP_CONFIG = {
-    API_URL: "http://127.0.0.1:5000",
-    USE_API: false
+    API_URL: "http://127.0.0.1:8000",
+    USE_API: true
 };

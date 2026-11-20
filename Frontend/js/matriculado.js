@@ -129,7 +129,7 @@
             GS.toast("Matrícula registrada correctamente.");
         } catch (error) {
             console.error(error);
-            GS.toast("No fue posible registrar la matrícula.");
+            GS.toast(`No fue posible registrar la matrícula: ${error.message}`);
         }
     });
 
@@ -138,24 +138,34 @@
         const del = event.target.dataset.delete;
 
         if (paid) {
-            const enrollments = await GS.store.getEnrollments();
-            const item = enrollments.find(enrollment => (
-                (enrollment.id || enrollment._id) === paid
-            ));
+            try {
+                const enrollments = await GS.store.getEnrollments();
+                const item = enrollments.find(enrollment => (
+                    (enrollment.id || enrollment._id) === paid
+                ));
 
-            if (item) {
-                await GS.store.updateEnrollment(paid, { pagado: true });
-                await render();
+                if (item) {
+                    await GS.store.updateEnrollment(paid, { pagado: true });
+                    await render();
 
-                GS.toast("Pago actualizado.");
+                    GS.toast("Pago actualizado.");
+                }
+            } catch (error) {
+                console.error(error);
+                GS.toast(`No fue posible actualizar el pago: ${error.message}`);
             }
         }
 
         if (del && confirm("¿Eliminar esta matrícula?")) {
-            await GS.store.deleteEnrollment(del);
-            await render();
+            try {
+                await GS.store.deleteEnrollment(del);
+                await render();
 
-            GS.toast("Matrícula eliminada.");
+                GS.toast("Matrícula eliminada.");
+            } catch (error) {
+                console.error(error);
+                GS.toast(`No fue posible eliminar la matrícula: ${error.message}`);
+            }
         }
     });
 
@@ -164,6 +174,6 @@
 
     Promise.all([loadStudents(), render()]).catch(error => {
         console.error(error);
-        GS.toast("No fue posible cargar los datos.");
+        GS.toast(`No fue posible cargar los datos: ${error.message}`);
     });
 })();

@@ -7,4 +7,5 @@ DATABASE_NAME = config("DATABASE_NAME", default="global_speak")
 
 client = AsyncIOMotorClient(MONGODB_URL)
 database = client[DATABASE_NAME]
+estudiantes_collection = database["estudiantes"]
 matriculas_collection = database["matriculas"]

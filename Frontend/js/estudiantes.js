@@ -96,7 +96,7 @@
             );
         } catch (error) {
             console.error(error);
-            GS.toast("No fue posible guardar el estudiante.");
+            GS.toast(`No fue posible guardar el estudiante: ${error.message}`);
         }
     });
 
@@ -129,7 +129,8 @@
 
                 GS.toast("Estudiante eliminado.");
             } catch (error) {
-                GS.toast("No fue posible eliminarlo.");
+                console.error(error);
+                GS.toast(`No fue posible eliminarlo: ${error.message}`);
             }
         }
     });
